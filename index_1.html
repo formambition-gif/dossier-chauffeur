@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Onboarding chauffeur taxi & VTC — Clé Pro Conseil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #1e3a5f;
+    --navy-dark: #0f1e35;
+    --navy-soft: #2c4e7a;
+    --cream: #f7f1e3;
+    --cream-light: #faf6ed;
+    --gold: #c4a572;
+    --gold-dark: #a88845;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --text-light: #9a9a9a;
+    --border: #e2d6b8;
+    --border-soft: #efe7d0;
+    --error: #c44545;
+    --success: #5a8c5a;
+    --bg: #fdfaf3;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* ─── Header ─── */
+  .brand {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .brand-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .brand-logo .accent { color: var(--gold); font-style: italic; }
+  .brand-sub {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--navy-dark);
+    margin: 0 0 10px;
+    line-height: 1.15;
+  }
+  h1 span { color: var(--gold); font-style: italic; }
+  .lead {
+    color: var(--text-muted);
+    margin: 0 0 32px;
+    font-size: 15px;
+  }
+
+  /* ─── Progress ─── */
+  .progress {
+    margin: 32px 0 36px;
+  }
+  .progress-bar {
+    height: 3px;
+    background: var(--border-soft);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--navy), var(--gold));
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  .progress-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+  .progress-steps span {
+    flex: 1;
+    text-align: center;
+    transition: color 0.3s;
+  }
+  .progress-steps span.active {
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .progress-steps span.done {
+    color: var(--gold-dark);
+  }
+
+  /* ─── Card / Step ─── */
+  .step {
+    display: none;
+    background: var(--white);
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    padding: 40px 38px;
+    box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04);
+  }
+  .step.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--navy-dark);
+    margin: 0 0 8px;
+  }
+  .step-desc {
+    color: var(--text-muted);
+    margin: 0 0 28px;
+    font-size: 14px;
+  }
+
+  /* ─── Section divider inside steps ─── */
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 28px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title:first-child { margin-top: 0; }
+  .section-title .icon {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  /* ─── Form fields ─── */
+  .field {
+    margin-bottom: 18px;
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .field-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 600px) {
+    .field-row, .field-row.three { grid-template-columns: 1fr; }
+  }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  label .req { color: var(--gold-dark); }
+  label .opt { color: var(--text-light); font-size: 10px; font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 4px; }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="number"],
+  input[type="password"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    background: var(--cream-light);
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(196, 165, 114, 0.15);
+  }
+  textarea { resize: vertical; min-height: 80px; }
+
+  /* ─── Radio cards (activité, situations) ─── */
+  .radio-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .radio-cards input[type="radio"] { display: none; }
+  .radio-cards label {
+    display: block;
+    text-align: center;
+    padding: 22px 16px;
+    background: var(--cream-light);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0;
+  }
+  .radio-cards label .label-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--navy);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .radio-cards label .label-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .radio-cards input[type="radio"]:checked + label {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--cream);
+  }
+  .radio-cards input[type="radio"]:checked + label .label-title {
+    color: var(--gold);
+  }
+  .radio-cards input[type="radio"]:checked + label .label-desc {
+    color: var(--cream);
+  }
+
+  /* ─── Inline radios ─── */
+  .radio-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .radio-inline label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--cream-light);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: var(--text);
+    margin: 0;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+  .radio-inline input { margin: 0; accent-color: var(--navy); }
+  .radio-inline label:has(input:checked) {
+    background: var(--navy);
+    color: var(--cream);
+    border-color: var(--navy);
+  }
+
+  /* ─── Platform card ─── */
+  .platform-card {
+    background: var(--cream-light);
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .platform-card.has-account { background: var(--white); border-color: var(--gold); }
+  .platform-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .platform-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .toggle-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--border);
+    border-radius: 24px;
+    transition: 0.3s;
+  }
+  .slider::before {
+    position: absolute;
+    content: "";
+    height: 18px; width: 18px;
+    left: 3px; top: 3px;
+    background: var(--white);
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+  .toggle-switch input:checked + .slider { background: var(--gold); }
+  .toggle-switch input:checked + .slider::before { transform: translateX(20px); }
+  .platform-fields { display: none; }
+  .platform-fields.show { display: block; animation: fadeIn 0.3s; }
+
+  /* ─── Security notice ─── */
+  .notice {
+    background: linear-gradient(to right, rgba(196, 165, 114, 0.08), rgba(196, 165, 114, 0.02));
+    border-left: 3px solid var(--gold);
+    padding: 14px 18px;
+    border-radius: 4px;
+    margin: 0 0 24px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+  .notice strong { color: var(--navy); font-weight: 600; }
+
+  .notice.info {
+    border-color: var(--navy);
+    background: linear-gradient(to right, rgba(30, 58, 95, 0.06), rgba(30, 58, 95, 0.01));
+  }
+
+  /* ─── Conditional sections ─── */
+  .conditional { display: none; }
+  .conditional.show { display: block; animation: fadeIn 0.3s; }
+
+  /* ─── Navigation ─── */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-soft);
+  }
+  button.btn {
+    font-family: 'Outfit', sans-serif;
+    padding: 13px 32px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--navy);
+    color: var(--cream);
+  }
+  .btn-primary:hover { background: var(--navy-dark); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--navy);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { background: var(--cream); border-color: var(--gold); }
+  .btn-submit {
+    background: var(--gold);
+    color: var(--white);
+  }
+  .btn-submit:hover { background: var(--gold-dark); }
+
+  /* ─── Récap ─── */
+  .recap-section {
+    margin-bottom: 24px;
+    padding: 18px 20px;
+    background: var(--cream-light);
+    border-radius: 6px;
+    border: 1px solid var(--border-soft);
+  }
+  .recap-section h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .recap-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+    border-bottom: 1px dashed var(--border-soft);
+  }
+  .recap-line:last-child { border: none; }
+  .recap-line .label-r {
+    color: var(--text-muted);
+    flex: 0 0 45%;
+  }
+  .recap-line .value-r {
+    color: var(--text);
+    font-weight: 500;
+    text-align: right;
+    flex: 1;
+    word-break: break-word;
+  }
+  .recap-line .empty { color: var(--text-light); font-style: italic; }
+
+  /* ─── RGPD ─── */
+  .rgpd {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin: 24px 0;
+    font-size: 13px;
+  }
+  .rgpd input { margin-top: 3px; accent-color: var(--navy); }
+  .rgpd label { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--text); margin: 0; line-height: 1.5; }
+
+  /* ─── Success ─── */
+  .success-screen {
+    text-align: center;
+    padding: 60px 20px;
+    display: none;
+  }
+  .success-screen.show { display: block; }
+  .success-icon {
+    width: 80px; height: 80px;
+    margin: 0 auto 28px;
+    background: var(--success);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    box-shadow: 0 8px 24px rgba(90, 140, 90, 0.25);
+    animation: pop 0.5s ease-out;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .success-screen h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    color: var(--navy-dark);
+    margin: 0 0 16px;
+  }
+  .success-screen h2 span { color: var(--gold); font-style: italic; }
+  .success-screen .success-lead {
+    font-size: 17px;
+    color: var(--text);
+    max-width: 520px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+  }
+  .success-steps {
+    max-width: 520px;
+    margin: 32px auto;
+    text-align: left;
+    background: var(--cream-light);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 24px 28px;
+  }
+  .success-steps h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--navy);
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+  .success-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .success-step:last-child { margin-bottom: 0; }
+  .success-step .check {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    background: var(--gold);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .success-contact {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-soft);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .success-contact strong { color: var(--navy); }
+
+  .error-msg {
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  input.error, select.error { border-color: var(--error); background: rgba(196, 69, 69, 0.04); }
+
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 11px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="brand">
+    <div class="brand-logo">Clé Pro <span class="accent">Conseil</span></div>
+    <div class="brand-sub">Cabinet de conseil & accompagnement entrepreneurial</div>
+  </div>
+
+  <h1>Dossier <span>chauffeur</span></h1>
+  <p class="lead">Merci de compléter l'ensemble de ces informations afin que nous puissions assurer la gestion administrative, juridique et comptable de votre activité. Toutes les données collectées sont strictement confidentielles.</p>
+
+  <!-- Progress -->
+  <div class="progress">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-steps" id="progressSteps">
+      <span class="active">Activité</span>
+      <span>Identité</span>
+      <span>Société</span>
+      <span>Métier</span>
+      <span>Plateformes</span>
+      <span>Accès admin</span>
+      <span>Récap</span>
+    </div>
+  </div>
+
+  <form id="form" autocomplete="off">
+
+  <!-- ───────────────────────────────────────────── STEP 1 ───────────────────────────────────────────── -->
+  <div class="step active" data-step="1">
+    <div class="step-title">Quelle est votre activité ?</div>
+    <div class="step-desc">Le formulaire s'adapte automatiquement en fonction de votre activité.</div>
+
+    <div class="radio-cards">
+      <input type="radio" id="act_taxi" name="activite" value="Taxi" required>
+      <label for="act_taxi">
+        <span class="label-title">Taxi</span>
+        <span class="label-desc">Titulaire d'une ADS et/ou location-gérance</span>
+      </label>
+
+      <input type="radio" id="act_vtc" name="activite" value="VTC" required>
+      <label for="act_vtc">
+        <span class="label-title">VTC</span>
+        <span class="label-desc">Inscrit au registre VTC</span>
+      </label>
+
+      <input type="radio" id="act_both" name="activite" value="Taxi + VTC" required>
+      <label for="act_both">
+        <span class="label-title">Taxi + VTC</span>
+        <span class="label-desc">Double activité</span>
+      </label>
+    </div>
+
+    <div class="nav">
+      <span></span>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────── STEP 2 ───────────────────────────────────────────── -->
+  <div class="step" data-step="2">
+    <div class="step-title">Informations personnelles</div>
+    <div class="step-desc">Renseignez votre identité, vos coordonnées et votre pièce d'identité.</div>
+
+    <div class="section-title"><span class="icon"></span>État civil</div>
+
+    <div class="field-row three">
+      <div>
+        <label>Civilité <span class="req">*</span></label>
+        <select name="civilite" required>
+          <option value="">—</option>
+          <option>M.</option>
+          <option>Mme</option>
+        </select>
+      </div>
+      <div>
+        <label>Nom de naissance <span class="req">*</span></label>
+        <input type="text" name="nom_naissance" required>
+      </div>
+      <div>
+        <label>Nom d'usage <span class="opt">(si différent)</span></label>
+        <input type="text" name="nom_usage">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label>Prénom(s) <span class="req">*</span></label>
+        <input type="text" name="prenoms" required>
+      </div>
+      <div>
+        <label>Nationalité <span class="req">*</span></label>
+        <input type="text" name="nationalite" value="Française" required>
+      </div>
+    </div>
+
+    <div class="field-row three">
+      <div>
+        <label>Date de naissance <span class="req">*</span></label>
+        <input type="date" name="date_naissance" required>
+      </div>
+      <div>
+        <label>Ville de naissance <span class="req">*</span></label>
+        <input type="text" name="ville_naissance" required>
+      </div>
+      <div>
+        <label>Pays de naissance <span class="req">*</span></label>
+        <input type="text" name="pays_naissance" value="France" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>N° de sécurité sociale <span class="req">*</span></label>
+      <input type="text" name="num_secu" pattern="[0-9 ]{13,21}" placeholder="15 chiffres" required>
+    </div>
+
+    <div class="section-title"><span class="icon"></span>Coordonnées</div>
+
+    <div class="field">
+      <label>Adresse personnelle <span class="req">*</span></label>
+      <input type="text" name="adresse" placeholder="N° et rue" required>
+    </div>
+    <div class="field">
+      <input type="text" name="complement_adresse" placeholder="Complément (bât., appt, etc.)">
+    </div>
+    <div class="field-row three">
+      <div>
+        <label>Code postal <span class="req">*</span></label>
+        <input type="text" name="cp" pattern="[0-9]{5}" required>
+      </div>
+      <div>
+        <label>Ville <span class="req">*</span></label>
+        <input type="text" name="ville" required>
+      </div>
+      <div>
+        <label>Pays <span class="req">*</span></label>
+        <input type="text" name="pays" value="France" required>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label>Téléphone <span class="req">*</span></label>
+        <input type="tel" name="telephone" required>
+      </div>
+      <div>
+        <label>Email <span class="req">*</span></label>
+        <input type="email" name="email" required>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="icon"></span>Situation familiale</div>
+
+    <div class="field">
+      <label>Situation familiale <span class="req">*</span></label>
+      <div class="radio-inline">
+        <label><input type="radio" name="situation" value="Célibataire" required> Célibataire</label>
+        <label><input type="radio" name="situation" value="Marié(e)"> Marié(e)</label>
+        <label><input type="radio" name="situation" value="Pacsé(e)"> Pacsé(e)</label>
+        <label><input type="radio" name="situation" value="Divorcé(e)"> Divorcé(e)</label>
+        <label><input type="radio" name="situation" value="Veuf(ve)"> Veuf(ve)</label>
+      </div>
+    </div>
+
+    <div class="conditional" id="cond_marie">
+      <div class="field">
+        <label>Régime matrimonial</label>
+        <select name="regime_matrimonial">
+          <option value="">—</option>
+          <option>Communauté réduite aux acquêts (régime légal)</option>
+          <option>Séparation de biens</option>
+          <option>Participation aux acquêts</option>
+          <option>Communauté universelle</option>
+          <option>Je ne sais pas</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="icon"></span>Pièce d'identité</div>
+
+    <div class="field-row">
+      <div>
+        <label>Type de pièce <span class="req">*</span></label>
+        <select name="type_piece" required>
+          <option value="">—</option>
+          <option>CNI</option>
+          <option>Passeport</option>
+          <option>Titre de séjour</option>
+        </select>
+      </div>
+      <div>
+        <label>Numéro <span class="req">*</span></label>
+        <input type="text" name="num_piece" required>
+      </div>
+    </div>
+    <div class="field-row three">
+      <div>
+        <label>Date de délivrance <span class="req">*</span></label>
+        <input type="date" name="date_piece" required>
+      </div>
+      <div>
+        <label>Autorité de délivrance <span class="req">*</span></label>
+        <input type="text" name="autorite_piece" required>
+      </div>
+      <div>
+        <label>Date d'expiration <span class="req">*</span></label>
+        <input type="date" name="exp_piece" required>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Retour</button>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────── STEP 3 ───────────────────────────────────────────── -->
+  <div class="step" data-step="3">
+    <div class="step-title">Statut juridique & entreprise</div>
+    <div class="step-desc">Informations sur la structure sous laquelle vous exercez (ou allez exercer).</div>
+
+    <div class="field">
+      <label>Situation <span class="req">*</span></label>
+      <div class="radio-inline">
+        <label><input type="radio" name="situation_entreprise" value="Création" required> Création en cours</label>
+        <label><input type="radio" name="situation_entreprise" value="Existante"> Entreprise existante</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Statut juridique <span class="req">*</span></label>
+      <select name="statut_juridique" required>
+        <option value="">—</option>
+        <option>Auto-entrepreneur (micro-entreprise)</option>
+        <option>Entreprise Individuelle (EI)</option>
+        <option>EURL</option>
+        <option>SASU</option>
+        <option>SARL</option>
+        <option>SAS</option>
+        <option>Je ne sais pas — à définir avec le cabinet</option>
+      </select>
+    </div>
+
+    <div class="conditional" id="cond_existante">
+      <div class="field-row">
+        <div>
+          <label>Dénomination sociale</label>
+          <input type="text" name="denomination">
+        </div>
+        <div>
+          <label>SIRET</label>
+          <input type="text" name="siret" pattern="[0-9 ]{14,17}" placeholder="14 chiffres">
+        </div>
+      </div>
+      <div class="field-row">
+        <div>
+          <label>Date de création</label>
+          <input type="date" name="date_creation">
+        </div>
+        <div>
+          <label>Code APE / NAF</label>
+          <input type="text" name="ape">
+        </div>
+      </div>
+    </div>
+
+    <div class="conditional" id="cond_creation">
+      <div class="field">
+        <label>Nom commercial souhaité <span class="opt">(facultatif)</span></label>
+        <input type="text" name="nom_commercial">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label>Régime fiscal <span class="req">*</span></label>
+        <select name="regime_fiscal" required>
+          <option value="">—</option>
+          <option>Micro-BIC</option>
+          <option>Micro-BNC</option>
+          <option>Réel simplifié</option>
+          <option>Réel normal</option>
+          <option>IS (impôt sur les sociétés)</option>
+          <option>Je ne sais pas — à compléter avec le cabinet</option>
+        </select>
+      </div>
+      <div>
+        <label>Régime TVA <span class="req">*</span></label>
+        <select name="regime_tva" required>
+          <option value="">—</option>
+          <option>Franchise en base (art. 293 B CGI)</option>
+          <option>Réel simplifié (CA12)</option>
+          <option>Réel normal (CA3 mensuel)</option>
+          <option>Réel normal (CA3 trimestriel)</option>
+          <option>Je ne sais pas — à compléter avec le cabinet</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Option versement libératoire <span class="opt">(si auto-entrepreneur)</span></label>
+      <div class="radio-inline">
+        <label><input type="radio" name="vfl" value="Oui"> Oui</label>
+        <label><input type="radio" name="vfl" value="Non"> Non</label>
+        <label><input type="radio" name="vfl" value="NC"> Non concerné</label>
+        <label><input type="radio" name="vfl" value="Je ne sais pas"> Je ne sais pas</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Adresse du siège social</label>
+      <div class="radio-inline">
+        <label><input type="radio" name="adresse_siege" value="Identique"> Identique à l'adresse personnelle</label>
+        <label><input type="radio" name="adresse_siege" value="Différente"> Différente</label>
+      </div>
+    </div>
+
+    <div class="conditional" id="cond_siege_diff">
+      <div class="field">
+        <input type="text" name="adresse_siege_rue" placeholder="N° et rue">
+      </div>
+      <div class="field-row three">
+        <div><input type="text" name="adresse_siege_cp" placeholder="Code postal"></div>
+        <div><input type="text" name="adresse_siege_ville" placeholder="Ville"></div>
+        <div><input type="text" name="adresse_siege_pays" placeholder="Pays" value="France"></div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Retour</button>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────── STEP 4 ───────────────────────────────────────────── -->
+  <div class="step" data-step="4">
+    <div class="step-title">Informations professionnelles</div>
+    <div class="step-desc">Carte professionnelle, autorisation d'exercer et véhicule.</div>
+
+    <!-- Carte pro -->
+    <div class="section-title"><span class="icon"></span>Carte professionnelle</div>
+
+    <div class="field-row">
+      <div>
+        <label>Numéro de carte professionnelle <span class="req">*</span></label>
+        <input type="text" name="num_carte_pro" required>
+      </div>
+      <div>
+        <label>Préfecture de délivrance <span class="req">*</span></label>
+        <input type="text" name="prefecture_carte" required>
+      </div>
+    </div>
+    <div class="field-row">
+      <div>
+        <label>Date de délivrance <span class="req">*</span></label>
+        <input type="date" name="date_carte" required>
+      </div>
+      <div>
+        <label>Date d'expiration <span class="req">*</span></label>
+        <input type="date" name="exp_carte" required>
+      </div>
+    </div>
+
+    <!-- TAXI section -->
+    <div class="conditional" id="cond_taxi">
+      <div class="section-title"><span class="icon"></span>Autorisation de Stationnement (ADS)</div>
+
+      <div class="field-row">
+        <div>
+          <label>Numéro d'ADS</label>
+          <input type="text" name="num_ads">
+        </div>
+        <div>
+          <label>Commune de rattachement</label>
+          <input type="text" name="commune_ads">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Vous êtes :</label>
+        <div class="radio-inline">
+          <label><input type="radio" name="type_ads" value="Propriétaire"> Propriétaire de l'ADS</label>
+          <label><input type="radio" name="type_ads" value="Locataire-gérant"> Locataire-gérant</label>
+          <label><input type="radio" name="type_ads" value="Salarié"> Salarié d'un titulaire</label>
+        </div>
+      </div>
+
+      <div class="conditional" id="cond_locataire_ads">
+        <div class="field-row">
+          <div>
+            <label>Nom du loueur d'ADS</label>
+            <input type="text" name="loueur_ads">
+          </div>
+          <div>
+            <label>Loyer mensuel TTC (€)</label>
+            <input type="number" step="0.01" name="loyer_ads">
+          </div>
+        </div>
+        <div class="field-row">
+          <div>
+            <label>Date de début du bail</label>
+            <input type="date" name="debut_bail">
+          </div>
+          <div>
+            <label>Durée du bail (mois)</label>
+            <input type="number" name="duree_bail">
+          </div>
+        </div>
+      </div>
+
+      <div class="conditional" id="cond_proprio_ads">
+        <div class="field-row">
+          <div>
+            <label>Date d'acquisition de l'ADS</label>
+            <input type="date" name="date_acq_ads">
+          </div>
+          <div>
+            <label>Prix d'acquisition (€) <span class="opt">si payante</span></label>
+            <input type="number" step="0.01" name="prix_ads">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VTC section -->
+    <div class="conditional" id="cond_vtc">
+      <div class="section-title"><span class="icon"></span>Registre VTC</div>
+
+      <div class="field-row">
+        <div>
+          <label>Numéro d'inscription EVTC</label>
+          <input type="text" name="num_evtc" placeholder="EVTC...">
+        </div>
+        <div>
+          <label>Date d'inscription au registre</label>
+          <input type="date" name="date_evtc">
+        </div>
+      </div>
+      <div class="field-row">
+        <div>
+          <label>N° de macaron / vignette VTC</label>
+          <input type="text" name="num_macaron">
+        </div>
+        <div>
+          <label>Date d'expiration inscription registre</label>
+          <input type="date" name="exp_evtc">
+        </div>
+      </div>
+    </div>
+
+    <!-- Véhicule -->
+    <div class="section-title"><span class="icon"></span>Véhicule professionnel</div>
+
+    <div class="field-row three">
+      <div>
+        <label>Marque <span class="req">*</span></label>
+        <input type="text" name="marque" required>
+      </div>
+      <div>
+        <label>Modèle <span class="req">*</span></label>
+        <input type="text" name="modele" required>
+      </div>
+      <div>
+        <label>Immatriculation <span class="req">*</span></label>
+        <input type="text" name="immat" required>
+      </div>
+    </div>
+    <div class="field-row">
+      <div>
+        <label>Date de mise en circulation</label>
+        <input type="date" name="date_mec">
+      </div>
+      <div>
+        <label>Carte grise au nom de</label>
+        <select name="cg_nom">
+          <option value="">—</option>
+          <option>Nom personnel</option>
+          <option>Société</option>
+          <option>Bailleur / loueur LLD-LOA</option>
+          <option>Je ne sais pas</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Type de financement du véhicule</label>
+      <div class="radio-inline">
+        <label><input type="radio" name="financement" value="Achat comptant"> Achat comptant</label>
+        <label><input type="radio" name="financement" value="Crédit"> Crédit</label>
+        <label><input type="radio" name="financement" value="LLD"> LLD</label>
+        <label><input type="radio" name="financement" value="LOA"> LOA</label>
+        <label><input type="radio" name="financement" value="Location"> Location courte durée</label>
+        <label><input type="radio" name="financement" value="Je ne sais pas"> Je ne sais pas</label>
+      </div>
+    </div>
+
+    <!-- Assurance -->
+    <div class="section-title"><span class="icon"></span>Assurance professionnelle</div>
+
+    <div class="field-row">
+      <div>
+        <label>Compagnie d'assurance</label>
+        <input type="text" name="assurance_compagnie">
+      </div>
+      <div>
+        <label>N° de contrat</label>
+        <input type="text" name="assurance_num">
+      </div>
+    </div>
+    <div class="field">
+      <label>Date d'échéance annuelle</label>
+      <input type="date" name="assurance_echeance">
+    </div>
+
+    <div class="nav">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Retour</button>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────── STEP 5 ───────────────────────────────────────────── -->
+  <div class="step" data-step="5">
+    <div class="step-title">Plateformes & centrales</div>
+    <div class="step-desc">Activez les plateformes sur lesquelles vous travaillez. Renseignez vos identifiants pour que nous puissions consulter vos relevés de course.</div>
+
+    <div class="notice">
+      <strong>⚠ Vos mots de passe sont sensibles.</strong> Si vous préférez, laissez le champ mot de passe vide ici et transmettez-le séparément à <strong>contact@cleproconseil.com</strong> ou directement par téléphone. Nous ne les utiliserons qu'à des fins comptables et administratives.
+    </div>
+
+    <!-- TAXI platforms -->
+    <div class="conditional" id="plat_taxi">
+      <div class="section-title"><span class="icon"></span>Centrales Taxi</div>
+
+      <!-- G7 -->
+      <div class="platform-card" id="card_g7">
+        <div class="platform-head">
+          <span class="platform-name">G7</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="g7_actif" onchange="toggleField(this, 'g7_fields', 'card_g7')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="g7_fields">
+          <div class="field-row three">
+            <div><label>N° G7 / matricule</label><input type="text" name="g7_matricule"></div>
+            <div><label>Identifiant</label><input type="text" name="g7_id"></div>
+            <div><label>Mot de passe</label><input type="password" name="g7_mdp"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Taxi Bleu -->
+      <div class="platform-card" id="card_tb">
+        <div class="platform-head">
+          <span class="platform-name">Taxis Bleus</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="tb_actif" onchange="toggleField(this, 'tb_fields', 'card_tb')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="tb_fields">
+          <div class="field-row three">
+            <div><label>N° / matricule</label><input type="text" name="tb_matricule"></div>
+            <div><label>Identifiant</label><input type="text" name="tb_id"></div>
+            <div><label>Mot de passe</label><input type="password" name="tb_mdp"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alpha Taxis -->
+      <div class="platform-card" id="card_alpha">
+        <div class="platform-head">
+          <span class="platform-name">Alpha Taxis</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="alpha_actif" onchange="toggleField(this, 'alpha_fields', 'card_alpha')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="alpha_fields">
+          <div class="field-row three">
+            <div><label>N° / matricule</label><input type="text" name="alpha_matricule"></div>
+            <div><label>Identifiant</label><input type="text" name="alpha_id"></div>
+            <div><label>Mot de passe</label><input type="password" name="alpha_mdp"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Uber Taxi -->
+      <div class="platform-card" id="card_uberx">
+        <div class="platform-head">
+          <span class="platform-name">Uber Taxi</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="uberx_actif" onchange="toggleField(this, 'uberx_fields', 'card_uberx')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="uberx_fields">
+          <div class="field-row">
+            <div><label>Email Uber Taxi</label><input type="email" name="uberx_email"></div>
+            <div><label>Mot de passe</label><input type="password" name="uberx_mdp"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bolt Taxi -->
+      <div class="platform-card" id="card_boltx">
+        <div class="platform-head">
+          <span class="platform-name">Bolt Taxi</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="boltx_actif" onchange="toggleField(this, 'boltx_fields', 'card_boltx')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="boltx_fields">
+          <div class="field-row">
+            <div><label>Email Bolt</label><input type="email" name="boltx_email"></div>
+            <div><label>Mot de passe</label><input type="password" name="boltx_mdp"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Autres centrales / abonnements taxi</label>
+        <textarea name="autres_taxi" placeholder="Précisez le nom de la centrale et les identifiants si applicable..."></textarea>
+      </div>
+    </div>
+
+    <!-- VTC platforms -->
+    <div class="conditional" id="plat_vtc">
+      <div class="section-title"><span class="icon"></span>Plateformes VTC</div>
+
+      <!-- Uber -->
+      <div class="platform-card" id="card_uber">
+        <div class="platform-head">
+          <span class="platform-name">Uber</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="uber_actif" onchange="toggleField(this, 'uber_fields', 'card_uber')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="uber_fields">
+          <div class="field-row">
+            <div><label>Email Uber</label><input type="email" name="uber_email"></div>
+            <div><label>Mot de passe</label><input type="password" name="uber_mdp"></div>
+          </div>
+          <div class="field"><label>UUID partenaire <span class="opt">(facultatif)</span></label><input type="text" name="uber_uuid"></div>
+        </div>
+      </div>
+
+      <!-- Bolt -->
+      <div class="platform-card" id="card_bolt">
+        <div class="platform-head">
+          <span class="platform-name">Bolt</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="bolt_actif" onchange="toggleField(this, 'bolt_fields', 'card_bolt')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="bolt_fields">
+          <div class="field-row">
+            <div><label>Email Bolt</label><input type="email" name="bolt_email"></div>
+            <div><label>Mot de passe</label><input type="password" name="bolt_mdp"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heetch -->
+      <div class="platform-card" id="card_heetch">
+        <div class="platform-head">
+          <span class="platform-name">Heetch</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="heetch_actif" onchange="toggleField(this, 'heetch_fields', 'card_heetch')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="heetch_fields">
+          <div class="field-row">
+            <div><label>Email Heetch</label><input type="email" name="heetch_email"></div>
+            <div><label>Mot de passe</label><input type="password" name="heetch_mdp"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FreeNow -->
+      <div class="platform-card" id="card_freenow">
+        <div class="platform-head">
+          <span class="platform-name">FreeNow</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="freenow_actif" onchange="toggleField(this, 'freenow_fields', 'card_freenow')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="freenow_fields">
+          <div class="field-row">
+            <div><label>Email FreeNow</label><input type="email" name="freenow_email"></div>
+            <div><label>Mot de passe</label><input type="password" name="freenow_mdp"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Marcel -->
+      <div class="platform-card" id="card_marcel">
+        <div class="platform-head">
+          <span class="platform-name">Marcel</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="marcel_actif" onchange="toggleField(this, 'marcel_fields', 'card_marcel')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="marcel_fields">
+          <div class="field-row">
+            <div><label>Email Marcel</label><input type="email" name="marcel_email"></div>
+            <div><label>Mot de passe</label><input type="password" name="marcel_mdp"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LeCab -->
+      <div class="platform-card" id="card_lecab">
+        <div class="platform-head">
+          <span class="platform-name">LeCab</span>
+          <label class="toggle-switch">
+            <input type="checkbox" name="lecab_actif" onchange="toggleField(this, 'lecab_fields', 'card_lecab')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="platform-fields" id="lecab_fields">
+          <div class="field-row">
+            <div><label>Email LeCab</label><input type="email" name="lecab_email"></div>
+            <div><label>Mot de passe</label><input type="password" name="lecab_mdp"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Autres plateformes VTC</label>
+        <textarea name="autres_vtc" placeholder="Précisez la plateforme et les identifiants..."></textarea>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Retour</button>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────── STEP 6 ───────────────────────────────────────────── -->
+  <div class="step" data-step="6">
+    <div class="step-title">Accès administratifs & bancaires</div>
+    <div class="step-desc">Identifiants nécessaires aux déclarations fiscales et sociales et coordonnées bancaires pour la gestion comptable.</div>
+
+    <div class="notice info">
+      <strong>Confidentialité.</strong> Ces identifiants sont nécessaires pour effectuer en votre nom les déclarations URSSAF, TVA, impôts et formalités INPI. Ils sont conservés de manière sécurisée et ne sont accessibles qu'aux personnes habilitées du cabinet.
+    </div>
+
+    <!-- impots.gouv.fr -->
+    <div class="section-title"><span class="icon"></span>impots.gouv.fr</div>
+    <div class="field">
+      <div class="radio-inline">
+        <label><input type="radio" name="impots_dispo" value="Oui" onchange="toggleAccess('impots')"> J'ai mes accès</label>
+        <label><input type="radio" name="impots_dispo" value="Non" onchange="toggleAccess('impots')"> Je n'ai pas / je ne sais pas</label>
+      </div>
+    </div>
+    <div class="conditional" id="impots_fields">
+      <div class="field-row">
+        <div>
+          <label>Numéro fiscal (13 chiffres)</label>
+          <input type="text" name="impots_id" pattern="[0-9 ]{13,17}">
+        </div>
+        <div>
+          <label>Mot de passe</label>
+          <input type="password" name="impots_mdp">
+        </div>
+      </div>
+    </div>
+
+    <!-- URSSAF -->
+    <div class="section-title"><span class="icon"></span>URSSAF</div>
+    <div class="field">
+      <div class="radio-inline">
+        <label><input type="radio" name="urssaf_dispo" value="Oui" onchange="toggleAccess('urssaf')"> J'ai mes accès</label>
+        <label><input type="radio" name="urssaf_dispo" value="Non" onchange="toggleAccess('urssaf')"> Je n'ai pas / je ne sais pas</label>
+      </div>
+    </div>
+    <div class="conditional" id="urssaf_fields">
+      <div class="field-row">
+        <div><label>Identifiant URSSAF</label><input type="text" name="urssaf_id"></div>
+        <div><label>Mot de passe</label><input type="password" name="urssaf_mdp"></div>
+      </div>
+    </div>
+
+    <!-- Auto-entrepreneur -->
+    <div class="section-title"><span class="icon"></span>Auto-entrepreneur <span style="font-size:13px;font-weight:400;color:var(--text-light);text-transform:none;letter-spacing:0;">(autoentrepreneur.urssaf.fr)</span></div>
+    <div class="field">
+      <div class="radio-inline">
+        <label><input type="radio" name="ae_dispo" value="Oui" onchange="toggleAccess('ae')"> J'ai mes accès</label>
+        <label><input type="radio" name="ae_dispo" value="Non" onchange="toggleAccess('ae')"> Je n'ai pas / non concerné</label>
+      </div>
+    </div>
+    <div class="conditional" id="ae_fields">
+      <div class="field-row">
+        <div><label>Identifiant</label><input type="text" name="ae_id"></div>
+        <div><label>Mot de passe</label><input type="password" name="ae_mdp"></div>
+      </div>
+    </div>
+
+    <!-- Banque -->
+    <div class="section-title"><span class="icon"></span>Coordonnées bancaires professionnelles</div>
+    <div class="field">
+      <div class="radio-inline">
+        <label><input type="radio" name="banque_dispo" value="Oui" onchange="toggleAccess('banque')"> J'ai mes coordonnées</label>
+        <label><input type="radio" name="banque_dispo" value="Non" onchange="toggleAccess('banque')"> Je transmettrai plus tard</label>
+      </div>
+    </div>
+    <div class="conditional" id="banque_fields">
+      <div class="field-row">
+        <div><label>Nom de la banque</label><input type="text" name="banque_nom"></div>
+        <div><label>BIC</label><input type="text" name="banque_bic"></div>
+      </div>
+      <div class="field">
+        <label>IBAN</label>
+        <input type="text" name="banque_iban" placeholder="FR76 ...">
+      </div>
+    </div>
+
+    <!-- Autorisation accès bancaire -->
+    <div class="section-title"><span class="icon"></span>Autorisation d'accès bancaire</div>
+    <div class="notice">
+      <strong>Pour le suivi comptable de votre activité,</strong> Clé Pro Conseil a besoin d'accéder en consultation à vos relevés bancaires professionnels. Cet accès est strictement limité à la <strong>consultation</strong> (aucune opération, aucun virement, aucun prélèvement ne peut être effectué).
+    </div>
+
+    <div class="field">
+      <label>Mode d'accès souhaité</label>
+      <div class="radio-inline">
+        <label><input type="radio" name="acces_bancaire_mode" value="Mandat consultation"> Mandat de consultation (espace pro)</label>
+        <label><input type="radio" name="acces_bancaire_mode" value="Identifiants"> Communication des identifiants</label>
+        <label><input type="radio" name="acces_bancaire_mode" value="Envoi relevés"> Envoi mensuel des relevés par mes soins</label>
+        <label><input type="radio" name="acces_bancaire_mode" value="Agrégateur"> Connexion via agrégateur (ex. Qonto, Bridge)</label>
+        <label><input type="radio" name="acces_bancaire_mode" value="Je ne sais pas"> Je ne sais pas — on en discutera</label>
+      </div>
+    </div>
+
+    <div class="conditional" id="cond_acces_ids">
+      <div class="field-row">
+        <div><label>Identifiant espace pro banque</label><input type="text" name="banque_acces_id"></div>
+        <div><label>Mot de passe</label><input type="password" name="banque_acces_mdp"></div>
+      </div>
+      <div class="field">
+        <label>Question secrète / réponse <span class="opt">(si applicable)</span></label>
+        <input type="text" name="banque_question">
+      </div>
+    </div>
+
+    <div class="rgpd" style="margin-top:18px;background:var(--cream-light);">
+      <input type="checkbox" id="autorise_bancaire" name="autorise_bancaire">
+      <label for="autorise_bancaire">
+        <strong>J'autorise expressément Clé Pro Conseil</strong> à consulter mes comptes bancaires professionnels (consultation des opérations, téléchargement des relevés et écritures) dans le cadre exclusif de la tenue de ma comptabilité et de mes obligations fiscales. Cette autorisation est révocable à tout moment par simple courrier ou email.
+      </label>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Retour</button>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Voir le récapitulatif →</button>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────── STEP 7 ───────────────────────────────────────────── -->
+  <div class="step" data-step="7">
+    <div class="step-title">Récapitulatif</div>
+    <div class="step-desc">Vérifiez vos informations avant envoi. Vous pouvez revenir en arrière à tout moment.</div>
+
+    <div id="recap"></div>
+
+    <div class="rgpd">
+      <input type="checkbox" id="rgpd" name="rgpd" required>
+      <label for="rgpd">
+        Je certifie l'exactitude des informations fournies et j'autorise Clé Pro Conseil à les utiliser
+        dans le cadre de la gestion administrative, juridique, fiscale et comptable de mon activité.
+        Conformément au RGPD, je dispose d'un droit d'accès, de rectification et d'effacement de mes données.
+      </label>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Retour</button>
+      <button type="submit" class="btn btn-submit" id="submitBtn">Envoyer mon dossier</button>
+    </div>
+  </div>
+
+  </form>
+
+  <!-- Success -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2>Dossier <span>complet et transmis</span></h2>
+    <p class="success-lead">
+      Merci d'avoir pris le temps de remplir ce dossier. Vos informations ont été transmises avec succès au cabinet Clé Pro Conseil.
+    </p>
+
+    <div class="success-steps">
+      <h3>Ce qui se passe maintenant</h3>
+
+      <div class="success-step">
+        <span class="check">1</span>
+        <span>Un <strong>récapitulatif PDF</strong> de votre dossier vient d'être téléchargé sur votre appareil — conservez-le précieusement.</span>
+      </div>
+
+      <div class="success-step">
+        <span class="check">2</span>
+        <span>Vous allez recevoir un <strong>email de confirmation</strong> sur votre adresse, contenant la copie de votre dossier.</span>
+      </div>
+
+      <div class="success-step">
+        <span class="check">3</span>
+        <span>Notre équipe va <strong>analyser votre dossier sous 48h ouvrées</strong> et reviendra vers vous pour les éléments à compléter ensemble (notamment les champs « je ne sais pas »).</span>
+      </div>
+
+      <div class="success-step">
+        <span class="check">4</span>
+        <span>Nous vous contacterons pour vous transmettre la <strong>liste des documents justificatifs</strong> à nous faire parvenir (pièce d'identité, carte pro, carte grise, etc.).</span>
+      </div>
+    </div>
+
+    <div class="success-contact">
+      Une question ? Contactez-nous : <strong>contact@cleproconseil.com</strong><br>
+      Clé Pro Conseil — 26 rue Bosquet, 75007 Paris
+    </div>
+  </div>
+
+  <div class="footer">
+    Clé Pro Conseil — 26 rue Bosquet, 75007 Paris — contact@cleproconseil.com
+  </div>
+</div>
+
+<script>
+  // ─── EmailJS init ───
+  (function() {
+    emailjs.init("5v49csdnNKefYLhIq");
+  })();
+
+  const EMAILJS_SERVICE   = "service_bwjufk9";
+  const EMAILJS_TEMPLATE  = "template_t5q38y8";        // template admin (→ contact@cleproconseil.com)
+  const EMAILJS_TEMPLATE_CLIENT = "template_btkzg5w";  // template confirmation client
+
+  let currentStep = 1;
+  const totalSteps = 7;
+
+  // ─── Conditional logic ───
+  document.querySelectorAll('input[name="activite"]').forEach(r => {
+    r.addEventListener('change', updateConditional);
+  });
+  document.querySelectorAll('input[name="situation"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('cond_marie').classList.toggle('show',
+        ['Marié(e)', 'Pacsé(e)'].includes(r.value) && r.checked);
+    });
+  });
+  document.querySelectorAll('input[name="situation_entreprise"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const val = document.querySelector('input[name="situation_entreprise"]:checked')?.value;
+      document.getElementById('cond_existante').classList.toggle('show', val === 'Existante');
+      document.getElementById('cond_creation').classList.toggle('show', val === 'Création');
+    });
+  });
+  document.querySelectorAll('input[name="adresse_siege"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('cond_siege_diff').classList.toggle('show',
+        document.querySelector('input[name="adresse_siege"]:checked')?.value === 'Différente');
+    });
+  });
+  document.querySelectorAll('input[name="type_ads"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const val = document.querySelector('input[name="type_ads"]:checked')?.value;
+      document.getElementById('cond_locataire_ads').classList.toggle('show', val === 'Locataire-gérant');
+      document.getElementById('cond_proprio_ads').classList.toggle('show', val === 'Propriétaire');
+    });
+  });
+
+  function updateConditional() {
+    const act = document.querySelector('input[name="activite"]:checked')?.value;
+    const isTaxi = act === 'Taxi' || act === 'Taxi + VTC';
+    const isVtc  = act === 'VTC'  || act === 'Taxi + VTC';
+    document.getElementById('cond_taxi').classList.toggle('show', isTaxi);
+    document.getElementById('cond_vtc').classList.toggle('show', isVtc);
+    document.getElementById('plat_taxi').classList.toggle('show', isTaxi);
+    document.getElementById('plat_vtc').classList.toggle('show', isVtc);
+  }
+
+  function toggleField(checkbox, fieldId, cardId) {
+    document.getElementById(fieldId).classList.toggle('show', checkbox.checked);
+    document.getElementById(cardId).classList.toggle('has-account', checkbox.checked);
+  }
+
+  function toggleAccess(prefix) {
+    const val = document.querySelector(`input[name="${prefix}_dispo"]:checked`)?.value;
+    const fields = document.getElementById(`${prefix}_fields`);
+    if (fields) fields.classList.toggle('show', val === 'Oui');
+  }
+
+  // Mode d'accès bancaire
+  document.querySelectorAll('input[name="acces_bancaire_mode"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const val = document.querySelector('input[name="acces_bancaire_mode"]:checked')?.value;
+      document.getElementById('cond_acces_ids').classList.toggle('show', val === 'Identifiants');
+    });
+  });
+
+  // ─── Navigation ───
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+
+    // progress
+    const pct = ((n - 1) / (totalSteps - 1)) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    const spans = document.querySelectorAll('#progressSteps span');
+    spans.forEach((s, i) => {
+      s.classList.remove('active', 'done');
+      if (i + 1 < n) s.classList.add('done');
+      if (i + 1 === n) s.classList.add('active');
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (n === 7) buildRecap();
+  }
+
+  function nextStep() {
+    if (!validateStep(currentStep)) return;
+    if (currentStep < totalSteps) {
+      currentStep++;
+      showStep(currentStep);
+    }
+  }
+  function prevStep() {
+    if (currentStep > 1) {
+      currentStep--;
+      showStep(currentStep);
+    }
+  }
+
+  function validateStep(n) {
+    const step = document.querySelector(`.step[data-step="${n}"]`);
+    const required = step.querySelectorAll('[required]');
+    let ok = true;
+    required.forEach(field => {
+      field.classList.remove('error');
+      // visible check : skip fields hidden inside conditional
+      if (field.offsetParent === null) return;
+      if (field.type === 'radio') {
+        const group = step.querySelectorAll(`[name="${field.name}"]`);
+        if (![...group].some(r => r.checked)) {
+          ok = false;
+          group.forEach(r => r.classList.add('error'));
+        }
+      } else if (!field.value.trim()) {
+        ok = false;
+        field.classList.add('error');
+      }
+    });
+    if (!ok) {
+      const firstErr = step.querySelector('.error');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return ok;
+  }
+
+  // ─── Récap ───
+  function buildRecap() {
+    const form = document.getElementById('form');
+    const data = new FormData(form);
+    const get = (n) => data.get(n) || '';
+
+    const sections = [
+      {
+        title: 'Activité',
+        rows: [['Type d\'activité', get('activite')]]
+      },
+      {
+        title: 'État civil',
+        rows: [
+          ['Civilité', get('civilite')],
+          ['Nom de naissance', get('nom_naissance')],
+          ['Nom d\'usage', get('nom_usage')],
+          ['Prénom(s)', get('prenoms')],
+          ['Date de naissance', get('date_naissance')],
+          ['Lieu de naissance', `${get('ville_naissance')} (${get('pays_naissance')})`],
+          ['Nationalité', get('nationalite')],
+          ['N° sécurité sociale', get('num_secu')]
+        ]
+      },
+      {
+        title: 'Coordonnées',
+        rows: [
+          ['Adresse', `${get('adresse')} ${get('complement_adresse')}, ${get('cp')} ${get('ville')}, ${get('pays')}`],
+          ['Téléphone', get('telephone')],
+          ['Email', get('email')],
+          ['Situation', get('situation') + (get('regime_matrimonial') ? ` — ${get('regime_matrimonial')}` : '')]
+        ]
+      },
+      {
+        title: 'Pièce d\'identité',
+        rows: [
+          ['Type', get('type_piece')],
+          ['N°', get('num_piece')],
+          ['Délivrée le', `${get('date_piece')} par ${get('autorite_piece')}`],
+          ['Expire le', get('exp_piece')]
+        ]
+      },
+      {
+        title: 'Statut juridique',
+        rows: [
+          ['Situation', get('situation_entreprise')],
+          ['Statut', get('statut_juridique')],
+          ['Dénomination', get('denomination') || get('nom_commercial')],
+          ['SIRET', get('siret')],
+          ['Régime fiscal', get('regime_fiscal')],
+          ['Régime TVA', get('regime_tva')],
+          ['Versement libératoire', get('vfl')]
+        ]
+      },
+      {
+        title: 'Carte professionnelle',
+        rows: [
+          ['N°', get('num_carte_pro')],
+          ['Préfecture', get('prefecture_carte')],
+          ['Délivrée le', get('date_carte')],
+          ['Expire le', get('exp_carte')]
+        ]
+      }
+    ];
+
+    const act = get('activite');
+    if (act === 'Taxi' || act === 'Taxi + VTC') {
+      sections.push({
+        title: 'ADS (Taxi)',
+        rows: [
+          ['N° ADS', get('num_ads')],
+          ['Commune', get('commune_ads')],
+          ['Situation', get('type_ads')],
+          ['Loueur', get('loueur_ads')],
+          ['Loyer ADS', get('loyer_ads') ? get('loyer_ads') + ' € TTC/mois' : ''],
+          ['Date acquisition', get('date_acq_ads')]
+        ]
+      });
+    }
+    if (act === 'VTC' || act === 'Taxi + VTC') {
+      sections.push({
+        title: 'Inscription VTC',
+        rows: [
+          ['N° EVTC', get('num_evtc')],
+          ['Date d\'inscription', get('date_evtc')],
+          ['N° macaron', get('num_macaron')],
+          ['Expiration registre', get('exp_evtc')]
+        ]
+      });
+    }
+
+    sections.push({
+      title: 'Véhicule',
+      rows: [
+        ['Marque / Modèle', `${get('marque')} ${get('modele')}`],
+        ['Immatriculation', get('immat')],
+        ['Mise en circulation', get('date_mec')],
+        ['Carte grise', get('cg_nom')],
+        ['Financement', get('financement')]
+      ]
+    });
+
+    sections.push({
+      title: 'Assurance',
+      rows: [
+        ['Compagnie', get('assurance_compagnie')],
+        ['N° contrat', get('assurance_num')],
+        ['Échéance', get('assurance_echeance')]
+      ]
+    });
+
+    // Platforms — only checked
+    const platRows = [];
+    const platforms = [
+      ['G7', 'g7_actif', 'g7_id', 'g7_mdp'],
+      ['Taxis Bleus', 'tb_actif', 'tb_id', 'tb_mdp'],
+      ['Alpha Taxis', 'alpha_actif', 'alpha_id', 'alpha_mdp'],
+      ['Uber Taxi', 'uberx_actif', 'uberx_email', 'uberx_mdp'],
+      ['Bolt Taxi', 'boltx_actif', 'boltx_email', 'boltx_mdp'],
+      ['Uber', 'uber_actif', 'uber_email', 'uber_mdp'],
+      ['Bolt', 'bolt_actif', 'bolt_email', 'bolt_mdp'],
+      ['Heetch', 'heetch_actif', 'heetch_email', 'heetch_mdp'],
+      ['FreeNow', 'freenow_actif', 'freenow_email', 'freenow_mdp'],
+      ['Marcel', 'marcel_actif', 'marcel_email', 'marcel_mdp'],
+      ['LeCab', 'lecab_actif', 'lecab_email', 'lecab_mdp']
+    ];
+    platforms.forEach(([name, actif, idField, mdpField]) => {
+      if (get(actif)) {
+        platRows.push([name, `${get(idField) || '—'} / mdp ${get(mdpField) ? '✓ renseigné' : '— à transmettre'}`]);
+      }
+    });
+    if (get('autres_taxi')) platRows.push(['Autres taxi', get('autres_taxi')]);
+    if (get('autres_vtc')) platRows.push(['Autres VTC', get('autres_vtc')]);
+    if (platRows.length) sections.push({ title: 'Plateformes actives', rows: platRows });
+
+    sections.push({
+      title: 'Accès administratifs',
+      rows: [
+        ['impots.gouv.fr', get('impots_dispo') === 'Non' ? 'Pas d\'accès' : (get('impots_id') ? `${get('impots_id')} / mdp ${get('impots_mdp') ? '✓' : '—'}` : '')],
+        ['URSSAF', get('urssaf_dispo') === 'Non' ? 'Pas d\'accès' : (get('urssaf_id') ? `${get('urssaf_id')} / mdp ${get('urssaf_mdp') ? '✓' : '—'}` : '')],
+        ['Auto-entrepreneur', get('ae_dispo') === 'Non' ? 'Non concerné / pas d\'accès' : (get('ae_id') ? `${get('ae_id')} / mdp ${get('ae_mdp') ? '✓' : '—'}` : '')]
+      ]
+    });
+
+    sections.push({
+      title: 'Banque',
+      rows: [
+        ['Banque', get('banque_dispo') === 'Non' ? 'À transmettre ultérieurement' : get('banque_nom')],
+        ['BIC', get('banque_bic')],
+        ['IBAN', get('banque_iban')],
+        ['Mode d\'accès bancaire', get('acces_bancaire_mode')],
+        ['Autorisation consultation', get('autorise_bancaire') ? '✓ Accordée' : '✗ Non accordée']
+      ]
+    });
+
+    const html = sections.map(sec => `
+      <div class="recap-section">
+        <h3>${sec.title}</h3>
+        ${sec.rows.map(([k, v]) => `
+          <div class="recap-line">
+            <span class="label-r">${k}</span>
+            <span class="value-r ${!v || v.trim() === '' ? 'empty' : ''}">${v && v.trim() ? v : 'Non renseigné'}</span>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+
+    document.getElementById('recap').innerHTML = html;
+  }
+
+  // ─── Submit ───
+  document.getElementById('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!document.getElementById('rgpd').checked) {
+      alert('Veuillez accepter la déclaration RGPD pour envoyer le dossier.');
+      return;
+    }
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours...';
+
+    const data = new FormData(e.target);
+    const obj = {};
+    data.forEach((v, k) => obj[k] = v);
+
+    // Construire un message texte complet pour l'admin
+    let recapText = '═══════════════════════════════════════\n';
+    recapText += 'NOUVEAU DOSSIER CHAUFFEUR\n';
+    recapText += '═══════════════════════════════════════\n\n';
+    recapText += `Activité : ${obj.activite || '—'}\n`;
+    recapText += `Nom : ${obj.civilite || ''} ${obj.prenoms || ''} ${obj.nom_naissance || ''} ${obj.nom_usage ? '(usage : ' + obj.nom_usage + ')' : ''}\n`;
+    recapText += `Email : ${obj.email || '—'}\n`;
+    recapText += `Téléphone : ${obj.telephone || '—'}\n\n`;
+    recapText += '─── ÉTAT CIVIL ───\n';
+    recapText += `Né(e) le ${obj.date_naissance} à ${obj.ville_naissance} (${obj.pays_naissance})\n`;
+    recapText += `Nationalité : ${obj.nationalite}\n`;
+    recapText += `N° SS : ${obj.num_secu}\n`;
+    recapText += `Situation : ${obj.situation} ${obj.regime_matrimonial ? '(' + obj.regime_matrimonial + ')' : ''}\n\n`;
+    recapText += '─── ADRESSE ───\n';
+    recapText += `${obj.adresse} ${obj.complement_adresse || ''}\n${obj.cp} ${obj.ville}, ${obj.pays}\n\n`;
+    recapText += '─── PIÈCE D\'IDENTITÉ ───\n';
+    recapText += `${obj.type_piece} n° ${obj.num_piece}\nDélivrée le ${obj.date_piece} par ${obj.autorite_piece}\nExpire le ${obj.exp_piece}\n\n`;
+    recapText += '─── STATUT JURIDIQUE ───\n';
+    recapText += `${obj.situation_entreprise} — ${obj.statut_juridique}\n`;
+    if (obj.denomination) recapText += `Dénomination : ${obj.denomination}\n`;
+    if (obj.siret) recapText += `SIRET : ${obj.siret}\n`;
+    if (obj.date_creation) recapText += `Date de création : ${obj.date_creation}\n`;
+    if (obj.ape) recapText += `Code APE/NAF : ${obj.ape}\n`;
+    if (obj.nom_commercial) recapText += `Nom commercial souhaité : ${obj.nom_commercial}\n`;
+    recapText += `Régime fiscal : ${obj.regime_fiscal}\n`;
+    recapText += `Régime TVA : ${obj.regime_tva}\n`;
+    if (obj.vfl) recapText += `VFL : ${obj.vfl}\n`;
+    if (obj.adresse_siege) {
+      if (obj.adresse_siege === 'Identique') {
+        recapText += `Siège social : identique à l'adresse personnelle\n`;
+      } else if (obj.adresse_siege === 'Différente') {
+        recapText += `Siège social : ${obj.adresse_siege_rue || ''}, ${obj.adresse_siege_cp || ''} ${obj.adresse_siege_ville || ''}, ${obj.adresse_siege_pays || ''}\n`;
+      }
+    }
+    recapText += '\n';
+    recapText += '─── CARTE PROFESSIONNELLE ───\n';
+    recapText += `N° ${obj.num_carte_pro} — Préfecture ${obj.prefecture_carte}\n`;
+    recapText += `Délivrée ${obj.date_carte} / expire ${obj.exp_carte}\n\n`;
+
+    if (obj.activite === 'Taxi' || obj.activite === 'Taxi + VTC') {
+      recapText += '─── ADS (TAXI) ───\n';
+      recapText += `N° ADS : ${obj.num_ads || '—'}\n`;
+      recapText += `Commune : ${obj.commune_ads || '—'}\n`;
+      recapText += `Type : ${obj.type_ads || '—'}\n`;
+      if (obj.loueur_ads) recapText += `Loueur : ${obj.loueur_ads} — ${obj.loyer_ads}€ TTC/mois\n`;
+      if (obj.debut_bail) recapText += `Bail : du ${obj.debut_bail} (${obj.duree_bail} mois)\n`;
+      if (obj.date_acq_ads) recapText += `Acquisition : ${obj.date_acq_ads} ${obj.prix_ads ? '(prix : ' + obj.prix_ads + ' €)' : ''}\n`;
+      recapText += '\n';
+    }
+    if (obj.activite === 'VTC' || obj.activite === 'Taxi + VTC') {
+      recapText += '─── REGISTRE VTC ───\n';
+      recapText += `N° EVTC : ${obj.num_evtc || '—'}\n`;
+      recapText += `Inscrit le : ${obj.date_evtc || '—'}\n`;
+      recapText += `Macaron : ${obj.num_macaron || '—'}\n`;
+      recapText += `Expiration : ${obj.exp_evtc || '—'}\n\n`;
+    }
+
+    recapText += '─── VÉHICULE ───\n';
+    recapText += `${obj.marque} ${obj.modele} — ${obj.immat}\n`;
+    recapText += `MEC : ${obj.date_mec} — CG au nom de : ${obj.cg_nom}\n`;
+    recapText += `Financement : ${obj.financement}\n\n`;
+
+    if (obj.assurance_compagnie) {
+      recapText += '─── ASSURANCE ───\n';
+      recapText += `${obj.assurance_compagnie} — Contrat ${obj.assurance_num}\nÉchéance : ${obj.assurance_echeance}\n\n`;
+    }
+
+    // Plateformes
+    recapText += '─── PLATEFORMES ACTIVES ───\n';
+    const platforms = [
+      ['G7', 'g7_actif', 'g7_matricule', 'g7_id', 'g7_mdp'],
+      ['Taxis Bleus', 'tb_actif', 'tb_matricule', 'tb_id', 'tb_mdp'],
+      ['Alpha Taxis', 'alpha_actif', 'alpha_matricule', 'alpha_id', 'alpha_mdp'],
+      ['Uber Taxi', 'uberx_actif', '', 'uberx_email', 'uberx_mdp'],
+      ['Bolt Taxi', 'boltx_actif', '', 'boltx_email', 'boltx_mdp'],
+      ['Uber VTC', 'uber_actif', 'uber_uuid', 'uber_email', 'uber_mdp'],
+      ['Bolt', 'bolt_actif', '', 'bolt_email', 'bolt_mdp'],
+      ['Heetch', 'heetch_actif', '', 'heetch_email', 'heetch_mdp'],
+      ['FreeNow', 'freenow_actif', '', 'freenow_email', 'freenow_mdp'],
+      ['Marcel', 'marcel_actif', '', 'marcel_email', 'marcel_mdp'],
+      ['LeCab', 'lecab_actif', '', 'lecab_email', 'lecab_mdp']
+    ];
+    let anyPlat = false;
+    platforms.forEach(([n, a, m, i, p]) => {
+      if (obj[a]) {
+        anyPlat = true;
+        recapText += `• ${n}`;
+        if (m && obj[m]) recapText += ` — ${obj[m]}`;
+        if (obj[i]) recapText += ` — ${obj[i]}`;
+        if (obj[p]) recapText += ` / mdp : ${obj[p]}`;
+        recapText += '\n';
+      }
+    });
+    if (!anyPlat) recapText += 'Aucune plateforme activée\n';
+    if (obj.autres_taxi) recapText += `Autres taxi : ${obj.autres_taxi}\n`;
+    if (obj.autres_vtc) recapText += `Autres VTC : ${obj.autres_vtc}\n`;
+    recapText += '\n';
+
+    recapText += '─── ACCÈS ADMINISTRATIFS ───\n';
+    if (obj.impots_dispo === 'Non') recapText += `impots.gouv.fr : pas d'accès\n`;
+    else if (obj.impots_id) recapText += `impots.gouv.fr : ${obj.impots_id} / ${obj.impots_mdp || '(mdp non communiqué)'}\n`;
+    if (obj.urssaf_dispo === 'Non') recapText += `URSSAF : pas d'accès\n`;
+    else if (obj.urssaf_id) recapText += `URSSAF : ${obj.urssaf_id} / ${obj.urssaf_mdp || '(mdp non communiqué)'}\n`;
+    if (obj.ae_dispo === 'Non') recapText += `Auto-entrepreneur : non concerné / pas d'accès\n`;
+    else if (obj.ae_id) recapText += `Auto-entrepreneur : ${obj.ae_id} / ${obj.ae_mdp || '(mdp non communiqué)'}\n`;
+    recapText += '\n';
+
+    recapText += '─── BANQUE ───\n';
+    if (obj.banque_dispo === 'Non') {
+      recapText += `Coordonnées à transmettre ultérieurement\n`;
+    } else {
+      recapText += `${obj.banque_nom || '—'} — BIC ${obj.banque_bic || '—'}\nIBAN : ${obj.banque_iban || '—'}\n`;
+    }
+    recapText += `\nMode d'accès bancaire : ${obj.acces_bancaire_mode || 'non précisé'}\n`;
+    if (obj.banque_acces_id) recapText += `Identifiant espace pro : ${obj.banque_acces_id} / ${obj.banque_acces_mdp || '(mdp non communiqué)'}\n`;
+    if (obj.banque_question) recapText += `Question secrète : ${obj.banque_question}\n`;
+    recapText += `Autorisation consultation : ${obj.autorise_bancaire ? '✓ ACCORDÉE' : '✗ NON ACCORDÉE'}\n`;
+
+    const adminParams = {
+      nom_complet: `${obj.civilite || ''} ${obj.prenoms || ''} ${obj.nom_naissance || ''}`.trim(),
+      email_client: obj.email,
+      telephone_client: obj.telephone,
+      activite: obj.activite,
+      message: recapText,
+      to_email: 'contact@cleproconseil.com'
+    };
+
+    const clientParams = {
+      to_name: `${obj.prenoms || ''} ${obj.nom_naissance || ''}`.trim(),
+      to_email: obj.email,
+      activite: obj.activite
+    };
+
+    // ─── Génération PDF ───
+    let pdfBase64 = null;
+    try {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const margin = 15;
+      let y = 20;
+
+      // En-tête
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+      doc.setTextColor(30, 58, 95);
+      doc.text('CLÉ PRO CONSEIL', margin, y);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(107, 107, 107);
+      doc.text('Cabinet de conseil & accompagnement entrepreneurial', margin, y + 6);
+      doc.text('26 rue Bosquet, 75007 Paris — contact@cleproconseil.com', margin, y + 11);
+
+      y += 22;
+      doc.setDrawColor(196, 165, 114);
+      doc.setLineWidth(0.5);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 8;
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.setTextColor(15, 30, 53);
+      doc.text(`Dossier ${obj.activite}`, margin, y);
+      y += 6;
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(60, 60, 60);
+      doc.text(`${obj.civilite || ''} ${obj.prenoms || ''} ${obj.nom_naissance || ''}`.trim(), margin, y);
+      y += 5;
+      doc.setFontSize(9);
+      doc.setTextColor(120, 120, 120);
+      doc.text(`Document généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}`, margin, y);
+      y += 10;
+
+      // Fonction utilitaire pour ajouter une section
+      const addSection = (title, rows) => {
+        // Saut de page si nécessaire
+        if (y > pageHeight - 40) {
+          doc.addPage();
+          y = 20;
+        }
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(30, 58, 95);
+        doc.text(title, margin, y);
+        doc.setDrawColor(196, 165, 114);
+        doc.setLineWidth(0.3);
+        doc.line(margin, y + 1.5, pageWidth - margin, y + 1.5);
+        y += 6;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9.5);
+        rows.forEach(([k, v]) => {
+          if (!v || (typeof v === 'string' && !v.trim())) return;
+          if (y > pageHeight - 15) {
+            doc.addPage();
+            y = 20;
+          }
+          doc.setTextColor(120, 120, 120);
+          doc.text(k + ' :', margin, y);
+          doc.setTextColor(30, 30, 30);
+          const valueText = String(v);
+          const splitText = doc.splitTextToSize(valueText, pageWidth - margin - 60);
+          doc.text(splitText, margin + 55, y);
+          y += Math.max(5, splitText.length * 4.5);
+        });
+        y += 4;
+      };
+
+      // Sections
+      addSection('IDENTITÉ', [
+        ['Civilité', obj.civilite],
+        ['Nom de naissance', obj.nom_naissance],
+        ['Nom d\'usage', obj.nom_usage],
+        ['Prénom(s)', obj.prenoms],
+        ['Nationalité', obj.nationalite],
+        ['Date de naissance', obj.date_naissance],
+        ['Lieu de naissance', `${obj.ville_naissance || ''} (${obj.pays_naissance || ''})`],
+        ['N° sécurité sociale', obj.num_secu],
+        ['Situation familiale', obj.situation + (obj.regime_matrimonial ? ' — ' + obj.regime_matrimonial : '')]
+      ]);
+
+      addSection('COORDONNÉES', [
+        ['Adresse', `${obj.adresse || ''} ${obj.complement_adresse || ''}`.trim()],
+        ['Code postal / Ville', `${obj.cp || ''} ${obj.ville || ''}`],
+        ['Pays', obj.pays],
+        ['Téléphone', obj.telephone],
+        ['Email', obj.email]
+      ]);
+
+      addSection('PIÈCE D\'IDENTITÉ', [
+        ['Type', obj.type_piece],
+        ['Numéro', obj.num_piece],
+        ['Délivrée le', obj.date_piece],
+        ['Autorité', obj.autorite_piece],
+        ['Expire le', obj.exp_piece]
+      ]);
+
+      addSection('STATUT JURIDIQUE & ENTREPRISE', [
+        ['Situation', obj.situation_entreprise],
+        ['Statut', obj.statut_juridique],
+        ['Dénomination', obj.denomination],
+        ['SIRET', obj.siret],
+        ['Date de création', obj.date_creation],
+        ['Code APE/NAF', obj.ape],
+        ['Nom commercial', obj.nom_commercial],
+        ['Régime fiscal', obj.regime_fiscal],
+        ['Régime TVA', obj.regime_tva],
+        ['Versement libératoire', obj.vfl],
+        ['Siège social', obj.adresse_siege === 'Identique' ? 'Identique à l\'adresse personnelle' : (obj.adresse_siege === 'Différente' ? `${obj.adresse_siege_rue || ''}, ${obj.adresse_siege_cp || ''} ${obj.adresse_siege_ville || ''}` : '')]
+      ]);
+
+      addSection('CARTE PROFESSIONNELLE', [
+        ['Numéro', obj.num_carte_pro],
+        ['Préfecture', obj.prefecture_carte],
+        ['Date de délivrance', obj.date_carte],
+        ['Date d\'expiration', obj.exp_carte]
+      ]);
+
+      if (obj.activite === 'Taxi' || obj.activite === 'Taxi + VTC') {
+        addSection('AUTORISATION DE STATIONNEMENT (ADS)', [
+          ['N° ADS', obj.num_ads],
+          ['Commune', obj.commune_ads],
+          ['Type', obj.type_ads],
+          ['Loueur', obj.loueur_ads],
+          ['Loyer mensuel', obj.loyer_ads ? obj.loyer_ads + ' € TTC' : ''],
+          ['Début du bail', obj.debut_bail],
+          ['Durée du bail', obj.duree_bail ? obj.duree_bail + ' mois' : ''],
+          ['Date d\'acquisition', obj.date_acq_ads],
+          ['Prix d\'acquisition', obj.prix_ads ? obj.prix_ads + ' €' : '']
+        ]);
+      }
+      if (obj.activite === 'VTC' || obj.activite === 'Taxi + VTC') {
+        addSection('REGISTRE VTC', [
+          ['N° EVTC', obj.num_evtc],
+          ['Date d\'inscription', obj.date_evtc],
+          ['N° macaron', obj.num_macaron],
+          ['Expiration registre', obj.exp_evtc]
+        ]);
+      }
+
+      addSection('VÉHICULE', [
+        ['Marque / Modèle', `${obj.marque || ''} ${obj.modele || ''}`],
+        ['Immatriculation', obj.immat],
+        ['Mise en circulation', obj.date_mec],
+        ['Carte grise au nom de', obj.cg_nom],
+        ['Financement', obj.financement]
+      ]);
+
+      addSection('ASSURANCE PROFESSIONNELLE', [
+        ['Compagnie', obj.assurance_compagnie],
+        ['N° contrat', obj.assurance_num],
+        ['Échéance', obj.assurance_echeance]
+      ]);
+
+      // Plateformes
+      const platRows = [];
+      const platforms = [
+        ['G7', 'g7_actif', 'g7_matricule', 'g7_id', 'g7_mdp'],
+        ['Taxis Bleus', 'tb_actif', 'tb_matricule', 'tb_id', 'tb_mdp'],
+        ['Alpha Taxis', 'alpha_actif', 'alpha_matricule', 'alpha_id', 'alpha_mdp'],
+        ['Uber Taxi', 'uberx_actif', '', 'uberx_email', 'uberx_mdp'],
+        ['Bolt Taxi', 'boltx_actif', '', 'boltx_email', 'boltx_mdp'],
+        ['Uber VTC', 'uber_actif', 'uber_uuid', 'uber_email', 'uber_mdp'],
+        ['Bolt', 'bolt_actif', '', 'bolt_email', 'bolt_mdp'],
+        ['Heetch', 'heetch_actif', '', 'heetch_email', 'heetch_mdp'],
+        ['FreeNow', 'freenow_actif', '', 'freenow_email', 'freenow_mdp'],
+        ['Marcel', 'marcel_actif', '', 'marcel_email', 'marcel_mdp'],
+        ['LeCab', 'lecab_actif', '', 'lecab_email', 'lecab_mdp']
+      ];
+      platforms.forEach(([n, a, m, i, p]) => {
+        if (obj[a]) {
+          let line = '';
+          if (m && obj[m]) line += obj[m] + ' — ';
+          if (obj[i]) line += obj[i];
+          if (obj[p]) line += ' / mdp : ' + obj[p];
+          platRows.push([n, line || '✓ actif']);
+        }
+      });
+      if (obj.autres_taxi) platRows.push(['Autres taxi', obj.autres_taxi]);
+      if (obj.autres_vtc) platRows.push(['Autres VTC', obj.autres_vtc]);
+      if (platRows.length) addSection('PLATEFORMES ACTIVES', platRows);
+
+      addSection('ACCÈS ADMINISTRATIFS', [
+        ['impots.gouv.fr', obj.impots_dispo === 'Non' ? 'Pas d\'accès' : (obj.impots_id ? obj.impots_id + ' / ' + (obj.impots_mdp || '(mdp non communiqué)') : '')],
+        ['URSSAF', obj.urssaf_dispo === 'Non' ? 'Pas d\'accès' : (obj.urssaf_id ? obj.urssaf_id + ' / ' + (obj.urssaf_mdp || '(mdp non communiqué)') : '')],
+        ['Auto-entrepreneur', obj.ae_dispo === 'Non' ? 'Non concerné' : (obj.ae_id ? obj.ae_id + ' / ' + (obj.ae_mdp || '(mdp non communiqué)') : '')]
+      ]);
+
+      addSection('BANQUE', [
+        ['Établissement', obj.banque_dispo === 'Non' ? 'À transmettre ultérieurement' : obj.banque_nom],
+        ['BIC', obj.banque_bic],
+        ['IBAN', obj.banque_iban],
+        ['Mode d\'accès', obj.acces_bancaire_mode],
+        ['Identifiant espace pro', obj.banque_acces_id ? obj.banque_acces_id + ' / ' + (obj.banque_acces_mdp || '(mdp non communiqué)') : ''],
+        ['Question secrète', obj.banque_question],
+        ['Autorisation consultation', obj.autorise_bancaire ? '✓ ACCORDÉE' : '✗ NON ACCORDÉE']
+      ]);
+
+      // Footer
+      const totalPages = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= totalPages; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.text(`Page ${i} / ${totalPages}`, pageWidth - margin, pageHeight - 8, { align: 'right' });
+        doc.text('Document confidentiel — Clé Pro Conseil', margin, pageHeight - 8);
+      }
+
+      // Téléchargement local pour le chauffeur
+      const filename = `Dossier_${(obj.nom_naissance || 'chauffeur').replace(/\s+/g, '_')}_${obj.activite || ''}.pdf`;
+      doc.save(filename);
+
+      // Base64 pour pièce jointe email
+      pdfBase64 = doc.output('datauristring').split(',')[1];
+    } catch (e) {
+      console.warn('Génération PDF échouée :', e);
+    }
+
+    // Ajout pièce jointe PDF (si disponible et < 500 Ko environ)
+    if (pdfBase64) {
+      adminParams.pdf_attachment = pdfBase64;
+      adminParams.pdf_filename = `Dossier_${(obj.nom_naissance || 'chauffeur').replace(/\s+/g, '_')}.pdf`;
+    }
+
+    try {
+      await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, adminParams);
+      try { await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE_CLIENT, clientParams); } catch (e) { console.warn('Confirmation client non envoyée :', e); }
+
+      document.querySelectorAll('.step').forEach(s => s.style.display = 'none');
+      document.querySelector('.progress').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de l'envoi. Merci de réessayer ou de nous contacter directement à contact@cleproconseil.com.");
+      btn.disabled = false;
+      btn.textContent = 'Envoyer mon dossier';
+    }
+  });
+</script>
+</body>
+</html>
